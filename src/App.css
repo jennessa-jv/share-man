@@ -1,38 +1,112 @@
-.App {
-  text-align: center;
+.homePageWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #1a0f17;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.formWrapper {
+    background: #24121c;
+    padding: 35px;
+    border-radius: 12px;
+    width: 420px;
+    max-width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.logoTitle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.logoTitle h2 {
+    margin: 0;
+    font-weight: 600;
 }
 
-.App-link {
-  color: #61dafb;
+.subText {
+    font-size: 14px;
+    color: #d6336c;
+    margin-bottom: 25px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.mainLabel {
+    font-size: 14px;
+    margin-bottom: 18px;
+    color: #d1b3c2;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputBox {
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
+    margin-bottom: 15px;
+    background: #2d1623;
+    color: #f8eaf1;
+    font-size: 14px;
+}
+
+.inputBox::placeholder {
+    color: #b98aa2;
+}
+
+.btn {
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.joinBtn {
+    background: #c2185b; /* dark pink */
+    width: 100px;
+    margin-left: auto;
+    color: white;
+}
+
+.joinBtn:hover {
+    background: #a3154c;
+}
+
+.createInfo {
+    margin-top: 18px;
+    font-size: 14px;
+    text-align: center;
+    color: #caa2b6;
+}
+
+.createNewBtn {
+    color: #d6336c;
+    text-decoration: none;
+    border-bottom: 1px solid #d6336c;
+}
+
+.createNewBtn:hover {
+    color: #ff4d8d;
+    border-color: #ff4d8d;
+}
+
+footer {
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+    color: #caa2b6;
+}
+
+footer a {
+  font-size: 10px;
+    color: #c2185b;
+    text-decoration: none;
 }
