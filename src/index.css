@@ -1,22 +1,22 @@
 body {
   margin: 0;
-  font-family: 'Nunito', sans-serif;
+   font-family: 'Orbitron', sans-serif;
   background: #1a0f17;
   color: #f8eaf1;
 }
-* {
-  font-family: 'Orbitron', sans-serif;
-}
+
 /* h1, h2, h3, h4 {
   font-family: 'Orbitron', sans-serif;
   letter-spacing: 1.5px;
   text-transform: none;
   font-weight: 600;
-} */
+} */s
 
-/* Code areas = developer feel */
-code, pre, .CodeMirror {
-  font-family: 'JetBrains Mono', monospace;
+.CodeMirror {
+    min-height: calc(100vh - 20px);
+    font-size: 20px;
+    line-height: 1.6;
+    padding-top: 20px;
 }
 
 .homePageLogo {
