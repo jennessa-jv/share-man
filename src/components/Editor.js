@@ -5,7 +5,29 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
 import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
+import "codemirror/mode/python/python";
+import "codemirror/mode/clike/clike";
 const Editor = () => {
+    const editorRef = useRef(null);
+     const [language, setLanguage] = useState("javascript");
+
+  const languageModes = {
+    javascript: "javascript",
+    python: "python",
+    java: "text/x-java",
+    cpp: "text/x-c++src",
+  };
+//   useEffect(() => {
+//     if (!editorRef.current) {
+//       editorRef.current = CodeMirror.fromTextArea(textareaRef.current, {
+//         mode: languageModes[language],
+//         theme: "dracula",
+//         lineNumbers: true,
+//       });
+//     } else {
+//       editorRef.current.setOption("mode", languageModes[language]);
+//     }
+//   }, [language]);
     useEffect(()=>{
       async function init() {
            Codemirror.fromTextArea(
