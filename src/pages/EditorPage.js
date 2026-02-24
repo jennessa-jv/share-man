@@ -1,10 +1,20 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect,useRef} from 'react'
 import Client from '../components/Client'
 import Editor from '../components/Editor'
 import { initSocket } from '../socket';
+import { useLocation, useNavigate ,Navigate,useParams} from 'react-router-dom';
+import ACTIONS from '../Actions';
+import toast from 'react-hot-toast';
 //we have two blocks the left block and thr right block so to code that up(mainwrap and aside(with another wrap))
 const EditorPage = () => {
   const socketRef = useRef(null);
+  const location=useLocation();
+  const reactNavigator=useNavigate();
+  const [clients, setClients] = useState([
+{ socketId: 1, username: 'Rakesh K' },
+{ socketId: 2, username: 'John Doe' },
+  ]);
+  const {roomId}=useParams(); //this params has a roomid which comes from the url we only sent from the home page
        useEffect(() => {
         const init = async () => {
             socketRef.current = await initSocket(); //await because initRef is an async function which returns a promise while it waits for the connection to be established
@@ -17,44 +27,50 @@ const EditorPage = () => {
                 reactNavigator('/');
             }
 
-            socketRef.current.emit(ACTIONS.JOIN, {
-                roomId,
-                username: location.state?.username,
+            socketRef.current.emit(ACTIONS.JOIN, { //emitting the socket->server listens in server.js
+                roomId, //within the url
+                username: location.state?.username, //using useNavigate we had sent the username from the home page while logging in 
+                //so for that we use useLocation
             });
+            console.log("Emitting JOIN");
 
-            socketRef.current.on(
-                ACTIONS.JOINED,
-                ({ clients, username, socketId }) => {
-                    if (username !== location.state?.username) {
-                        toast.success(`${username} joined the room.`);
-                        console.log(`${username} joined`);
-                    }
-                    setClients(clients);
-                    socketRef.current.emit(ACTIONS.SYNC_CODE, {
-                        code: codeRef.current,
-                        socketId,
-                    });
-                }
-            );
-            socketRef.current.on(
-                ACTIONS.DISCONNECTED,
-                ({ socketId, username }) => {
-                    toast.success(`${username} left the room.`);
-                    setClients((prev) => {
-                        return prev.filter(
-                            (client) => client.socketId !== socketId
-                        );
-                    });
-                }
-            );
+        //     socketRef.current.on(
+        //         ACTIONS.JOINED,
+        //         ({ clients, username, socketId }) => {
+        //             if (username !== location.state?.username) {
+        //                 toast.success(`${username} joined the room.`);
+        //                 console.log(`${username} joined`);
+        //             }
+        //             setClients(clients);
+        //             socketRef.current.emit(ACTIONS.SYNC_CODE, {
+        //                 code: codeRef.current,
+        //                 socketId,
+        //             });
+        //         }
+        //     );
+        //     socketRef.current.on(
+        //         ACTIONS.DISCONNECTED,
+        //         ({ socketId, username }) => {
+        //             toast.success(`${username} left the room.`);
+        //             setClients((prev) => {
+        //                 return prev.filter(
+        //                     (client) => client.socketId !== socketId
+        //                 );
+        //             });
+        //         }
+        //     );
         };
         init();
-        return () => {
-            socketRef.current.disconnect();
-            socketRef.current.off(ACTIONS.JOINED);
-            socketRef.current.off(ACTIONS.DISCONNECTED);
-        };
+        // return () => {
+        //     socketRef.current.disconnect();
+        //     socketRef.current.off(ACTIONS.JOINED);
+        //     socketRef.current.off(ACTIONS.DISCONNECTED);
+        // };
     }, []);
+      if (!location.state) { //if we dont get the state
+        return <Navigate to="/" />;
+    }
+
   return (
       <div className="mainWrap">
             <div className="aside">

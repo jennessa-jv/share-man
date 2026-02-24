@@ -9,7 +9,7 @@ import "codemirror/mode/python/python";
 import "codemirror/mode/clike/clike";
 const Editor = () => {
     const editorRef = useRef(null);
-     const [language, setLanguage] = useState("javascript");
+    //  const [language, setLanguage] = useState("javascript");
 
   const languageModes = {
     javascript: "javascript",

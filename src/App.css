@@ -80,6 +80,11 @@
     margin-left: auto;
     color: white;
 }
+.homePageLogo {
+    height: 90px;
+    margin: 0 auto 30px auto;
+    display: block;
+}
 
 .joinBtn:hover,.leaveBtn:hover {
     background: #a3154c;
@@ -132,8 +137,13 @@ footer a {
     flex-direction: column;
     font-size: 12px;
 }
+
 .asideInner {
     flex: 1;
+}
+
+.copyBtn {
+    margin-top: auto;
 }
 
 .clientsList {
@@ -174,9 +184,10 @@ footer a {
 .aside h3 {
     margin: 6px 0 10px 0;
 }
+.editorWrap {
+    height: 100%;
+}
+
 .CodeMirror {
-    min-height: calc(100vh - 20px);
-    font-size: 17px;
-    line-height: 1.6;
-    padding-top: 20px;
+    height: 100% !important;
 }
