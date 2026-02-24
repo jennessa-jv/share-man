@@ -10,10 +10,7 @@ const EditorPage = () => {
   const socketRef = useRef(null);
   const location=useLocation();
   const reactNavigator=useNavigate();
-  const [clients, setClients] = useState([
-{ socketId: 1, username: 'Rakesh K' },
-{ socketId: 2, username: 'John Doe' },
-  ]);
+  const [clients, setClients] = useState([])
   const {roomId}=useParams(); //this params has a roomid which comes from the url we only sent from the home page
        useEffect(() => {
         const init = async () => {
@@ -33,21 +30,21 @@ const EditorPage = () => {
                 //so for that we use useLocation
             });
             console.log("Emitting JOIN");
-
-        //     socketRef.current.on(
-        //         ACTIONS.JOINED,
-        //         ({ clients, username, socketId }) => {
-        //             if (username !== location.state?.username) {
-        //                 toast.success(`${username} joined the room.`);
-        //                 console.log(`${username} joined`);
-        //             }
-        //             setClients(clients);
-        //             socketRef.current.emit(ACTIONS.SYNC_CODE, {
-        //                 code: codeRef.current,
-        //                 socketId,
-        //             });
-        //         }
-        //     );
+        //listening for the newly jouined member to all the members
+            socketRef.current.on(
+                ACTIONS.JOINED,
+                ({ clients, username, socketId }) => {  
+                    if (username !== location.state?.username) {  //if i join(i am the newly joined member) i shouldnt be notified at all only the old members
+                        toast.success(`${username} joined the room.`);
+                        console.log(`${username} joined`);
+                    }
+                    setClients(clients); //pushing the clients that have joined
+                    // socketRef.current.emit(ACTIONS.SYNC_CODE, {
+                    //     code: codeRef.current,
+                    //     socketId,
+                    // });
+                }
+            );
         //     socketRef.current.on(
         //         ACTIONS.DISCONNECTED,
         //         ({ socketId, username }) => {
