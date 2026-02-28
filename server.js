@@ -39,18 +39,21 @@ io.on('connection',(socket)=>{
         }); //now the ui in the editorpage will be updated(all old members in the room will be notified about the newly joined member)
    
     })
-     socket.on('disconnecting', () => {
-        const rooms = [...socket.rooms];
-        rooms.forEach((roomId) => {
-            socket.in(roomId).emit(ACTIONS.DISCONNECTED, {
-                socketId: socket.id,
-                username: userSocketMap[socket.id],
-            });
-        });
-        delete userSocketMap[socket.id];
-        socket.leave();
+      socket.on(ACTIONS.CODE_CHANGE, ({ roomId, code }) => { //this code change os from the client to the server
+        socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code }); //emiiting the code to the client from the server
     });
 
+     socket.on('disconnecting', () => { //another event->if someone closes the browser or goes to another page
+        const rooms = [...socket.rooms]; //getting all the rooms
+        rooms.forEach((roomId) => { //for each room
+            socket.in(roomId).emit(ACTIONS.DISCONNECTED, { //notify insode the room
+                socketId: socket.id,
+                username: userSocketMap[socket.id], //broadcasting that user w username and id has been disconnected
+            });
+        }); //deleting the disconnected user from the map //*now moving on to the ui changes
+        socket.leave();
+    });
+ 
 const PORT=process.env.PORT||5000
 server.listen(PORT,()=>{
     console.log(`listening on port ${PORT}`)

@@ -54,8 +54,8 @@ const Editor = ({socketRef}) => {
         }
       init()
     },[]);
-
-
+//setvalue is a method of codemirror which is used to set the value of the editor and when we set the value of the editor it also triggers the change event but we dont want to emit the code change event to the server when we are setting the value of the editor because that will create an infinite loop of code changes being emitted to the server and then being set in the editor and then being emitted again so we check if the origin of the change is not setValue then only we emit the code change event to the server
+//dynamically 
     useEffect(() => {
         if (socketRef.current) { //code to be set into the database (wmitted from the server)
             socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code }) => {
