@@ -45,24 +45,24 @@ const EditorPage = () => {
                     // });
                 }
             );
-        //     socketRef.current.on(
-        //         ACTIONS.DISCONNECTED,
-        //         ({ socketId, username }) => {
-        //             toast.success(`${username} left the room.`);
-        //             setClients((prev) => {
-        //                 return prev.filter(
-        //                     (client) => client.socketId !== socketId
-        //                 );
-        //             });
-        //         }
-        //     );
+            socketRef.current.on(
+                ACTIONS.DISCONNECTED,
+                ({ socketId, username }) => {
+                    toast.success(`${username} left the room.`);
+                    setClients((prev) => { //filtering out the disconnected client from the clients array
+                        return prev.filter(
+                            (client) => client.socketId !== socketId
+                        );
+                    });
+                }
+            );
         };
         init();
-        // return () => {
-        //     socketRef.current.disconnect();
-        //     socketRef.current.off(ACTIONS.JOINED);
-        //     socketRef.current.off(ACTIONS.DISCONNECTED);
-        // };
+        return () => { //cleanup function->when the component unmounts we need to disconnect the socket and also remove all the listeners
+            socketRef.current.disconnect();
+            socketRef.current.off(ACTIONS.JOINED);
+            socketRef.current.off(ACTIONS.DISCONNECTED);
+        };
     }, []);
       if (!location.state) { //if we dont get the state
         return <Navigate to="/" />;
@@ -98,11 +98,11 @@ const EditorPage = () => {
                     </div>
                     <div className="editorWrap">
                 <Editor    //a different component for the editor!!
-                    // socketRef={socketRef}
-                    // roomId={roomId}
-                    // onCodeChange={(code) => {
-                    //     codeRef.current = code;
-                    // }}
+                    socketRef={socketRef}
+                    roomId={roomId}
+                    onCodeChange={(code) => {
+                        codeRef.current = code;
+                    }}
                 />
                   </div>
                     </div>
