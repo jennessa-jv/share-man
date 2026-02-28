@@ -100,9 +100,9 @@ const EditorPage = () => {
                 <Editor    //a different component for the editor!!
                     socketRef={socketRef}
                     roomId={roomId}
-                    onCodeChange={(code) => { //changed code to other clients
-                        codeRef.current = code;
-                    }}
+                    // onCodeChange={(code) => { //changed code to other clients
+                        // codeRef.current = code;
+                    // }}
                 />
                   </div>
                     </div>
