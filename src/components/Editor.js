@@ -34,7 +34,7 @@ const Editor = ({socketRef,roomId,onCodeChange}) => {
            editorRef.current=Codemirror.fromTextArea(
                 document.getElementById('realtimeEditor'),
                 {
-                    mode: { name: 'javascript', json: true },
+                    mode: 'javascript',
                     theme: 'dracula',
                     autoCloseTags: true,
                     autoCloseBrackets: true,
@@ -67,7 +67,10 @@ const Editor = ({socketRef,roomId,onCodeChange}) => {
                 }
             });
         }
-    },[]);
+        return () => {
+            socketRef.current.off(ACTIONS.CODE_CHANGE);
+        };
+    },[socketRef.current]);
   return <textarea id="realtimeEditor"></textarea>
 }
 

@@ -31,14 +31,14 @@ io.on('connection',(socket)=>{
     //we nned to notify users when a new user joins in 
     const clients=getAllConnectedClients(roomId);
     console.log(clients) //emitting to all the clients present in the room
-    clients.forEach(({ socketId }) => {
-            io.to(socket.id).emit(ACTIONS.JOINED, {
-                clients, 
-                username,
-                socketId: socket.id,
-            });
-        }); 
-    })//now the ui in the editorpage will be updated(all old members in the room will be notified about the newly joined member)
+ clients.forEach(({ socketId }) => {
+    io.to(socketId).emit(ACTIONS.JOINED, {
+        clients,
+        username,
+        socketId: socket.id,
+    });
+});
+})//now the ui in the editorpage will be updated(all old members in the room will be notified about the newly joined member)
       socket.on(ACTIONS.CODE_CHANGE, ({ roomId, code }) => { //this code change os from the client to the server
         socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code }); //emiiting the code to the client from the server ->gokmg to the editor //?also socket.im excludes the me from the other clients
     });

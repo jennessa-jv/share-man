@@ -25,27 +25,28 @@ const EditorPage = () => {
                 reactNavigator('/');
             }
 
-            socketRef.current.emit(ACTIONS.JOIN, { //emitting the socket->server listens in server.js
-                roomId, //within the url
-                username: location.state?.username, //using useNavigate we had sent the username from the home page while logging in 
-                //so for that we use useLocation
-            });
-            console.log("Emitting JOIN");
-        //listening for the newly jouined member to all the members
-            socketRef.current.on(
-                ACTIONS.JOINED,
-                ({ clients, username, socketId }) => {  
-                    if (username !== location.state?.username) {  //if i join(i am the newly joined member) i shouldnt be notified at all only the old members
-                        toast.success(`${username} joined the room.`);
-                        console.log(`${username} joined`);
-                    }
-                    setClients(clients); //pushing the clients that have joined
-                    // socketRef.current.emit(ACTIONS.SYNC_CODE, {
-                    //     code: codeRef.current,
-                    //     socketId,
-                    // });
-                }
-            );
+            
+       socketRef.current.on(
+  ACTIONS.JOINED,
+  ({ clients, username, socketId }) => {
+    if (socketId !== socketRef.current.id) {
+        console.log("Current codeRef:", codeRef.current);
+      toast.success(`${username} joined the room.`);
+    }
+
+    setClients(clients);
+console.log("JOINED fired:", {
+  eventSocketId: socketId,
+  mySocketId: socketRef.current.id
+});
+  
+    //   socketRef.current.emit(ACTIONS.SYNC_CODE, {
+    //     code: codeRef.current,
+    //     socketId,
+    //   });
+    
+  }
+);
             socketRef.current.on(
                 ACTIONS.DISCONNECTED,
                 ({ socketId, username }) => {
@@ -57,6 +58,13 @@ const EditorPage = () => {
                     });
                 }
             );
+            socketRef.current.emit(ACTIONS.JOIN, { //emitting the socket->server listens in server.js
+                roomId, //within the url
+                username: location.state?.username, //using useNavigate we had sent the username from the home page while logging in 
+                //so for that we use useLocation
+            });
+            console.log("Emitting JOIN");
+        //listening for the newly jouined member to all the members
         };
         init();
         return () => { //cleanup function->when the component unmounts we need to disconnect the socket and also remove all the listeners
@@ -65,6 +73,19 @@ const EditorPage = () => {
             socketRef.current.off(ACTIONS.DISCONNECTED);
         };
     }, []);
+      async function copyRoomId() {
+        try { //usomg the browser api so we use try catch
+            await navigator.clipboard.writeText(roomId);//navigate is globally available
+            toast.success('Room ID has been copied to your clipboard');
+        } catch (err) {
+            toast.error('Could not copy the Room ID');
+            console.error(err);
+        }
+    }
+    function leaveRoom() {
+        reactNavigator('/');
+    }
+
       if (!location.state) { //if we dont get the state
         return <Navigate to="/" />;
     }
@@ -90,10 +111,10 @@ const EditorPage = () => {
                         ))}
                     </div>
                     </div>
-                     <button className="btn copyBtn">
+                     <button className="btn copyBtn" onClick={copyRoomId}>
                     Copy ROOM ID
                 </button>
-                     <button className="btn leaveBtn">
+                     <button className="btn leaveBtn" onClick={leaveRoom}>
                     Leave
                 </button>
                     </div>
