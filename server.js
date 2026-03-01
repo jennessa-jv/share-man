@@ -31,14 +31,19 @@ io.on('connection',(socket)=>{
     //we nned to notify users when a new user joins in 
     const clients=getAllConnectedClients(roomId);
     console.log(clients) //emitting to all the clients present in the room
+    clients.forEach(({ socketId }) => {
             io.to(socket.id).emit(ACTIONS.JOINED, {
                 clients, 
                 username,
                 socketId: socket.id,
             });
-        }); //now the ui in the editorpage will be updated(all old members in the room will be notified about the newly joined member)
+        }); 
+    })//now the ui in the editorpage will be updated(all old members in the room will be notified about the newly joined member)
       socket.on(ACTIONS.CODE_CHANGE, ({ roomId, code }) => { //this code change os from the client to the server
-        socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code }); //emiiting the code to the client from the server ->gokmg to the editor
+        socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code }); //emiiting the code to the client from the server ->gokmg to the editor //?also socket.im excludes the me from the other clients
+    });
+    socket.on(ACTIONS.SYNC_CODE, ({ socketId, code }) => {
+        io.to(socketId).emit(ACTIONS.CODE_CHANGE, { code });
     });
        socket.on('disconnecting', () => { //another event->if someone closes the browser or goes to another page
         const rooms = [...socket.rooms]; //getting all the rooms
@@ -47,7 +52,8 @@ io.on('connection',(socket)=>{
                 socketId: socket.id,
                 username: userSocketMap[socket.id], //broadcasting that user w username and id has been disconnected
             });
-        }); //deleting the disconnected user from the map //*now moving on to the ui changes
+        });
+         delete userSocketMap[socket.id]; //deleting the disconnected user from the map //*now moving on to the ui changes
         socket.leave();
     });
  

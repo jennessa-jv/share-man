@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 //we have two blocks the left block and thr right block so to code that up(mainwrap and aside(with another wrap))
 const EditorPage = () => {
   const socketRef = useRef(null);
+  const codeRef = useRef(null);
   const location=useLocation();
   const reactNavigator=useNavigate();
   const [clients, setClients] = useState([])
@@ -100,9 +101,9 @@ const EditorPage = () => {
                 <Editor    //a different component for the editor!!
                     socketRef={socketRef}
                     roomId={roomId}
-                    // onCodeChange={(code) => { //changed code to other clients
-                        // codeRef.current = code;
-                    // }}
+                    onCodeChange={(code) => { //changed code to other clients
+                        codeRef.current = code;
+                    }}
                 />
                   </div>
                     </div>
