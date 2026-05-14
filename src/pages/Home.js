@@ -20,14 +20,24 @@ const Home = () => {
 
     const joinRoom = () => {
         if (!roomId || !username) {
-            toast.error('Room ID & username is required',
+            toast.error('Room ID & username required',
                 {
                     icon:null
                 }
             );
             return;
         }
+// Then inside the EditorPage, you can access it using:
 
+// import { useLocation } from "react-router-dom";
+
+// const location = useLocation();
+
+// console.log(location.state.username);
+
+// which gives:
+
+// Jen
         // Redirect
         navigate(`/editor/${roomId}`, {
             state: {
@@ -35,7 +45,7 @@ const Home = () => {
             },
         });
     };
-
+// This function checks whether the user pressed the Enter key.
     const handleInputEnter = (e) => {
         if (e.code === 'Enter') {
             joinRoom();

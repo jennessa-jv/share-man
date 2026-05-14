@@ -40,10 +40,10 @@ console.log("JOINED fired:", {
   mySocketId: socketRef.current.id
 });
   
-    //   socketRef.current.emit(ACTIONS.SYNC_CODE, {
-    //     code: codeRef.current,
-    //     socketId,
-    //   });
+      socketRef.current.emit(ACTIONS.SYNC_CODE, {
+        code: codeRef.current,
+        socketId,
+      });
     
   }
 );
